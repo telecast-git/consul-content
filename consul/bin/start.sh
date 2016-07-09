@@ -3,7 +3,10 @@
 PIDFILE=/var/run/consul.pid
 CONSUL_BIN=/usr/local/bin/consul
 NET_DEV=${CONSUL_NET_DEV-eth0}
-RUN_SERVER=${RUN_SERVER-false}
+CONSUL_SERVER=${CONSUL_SERVER}
+if [ "X${CONSUL_SERVER}" == "X" ];then
+    CONSUL_SERVER=${RUN_SERVER-false}
+fi
 LINKED_SERVER=${LINKED_SERVER-0}
 BOOTSTRAP_CONSUL=${BOOTSTRAP_CONSUL-false}
 CONSUL_BOOTSTRAP_SOLO=${CONSUL_BOOTSTRAP_SOLO-$BOOTSTRAP_CONSUL}
@@ -23,7 +26,7 @@ fi
 
 if [ "X${CONSUL_DOMAIN_SUFFIX}" == "X" ] && [ $(echo ${NODE_NAME} | tr '.' '\n' | wc -l) -gt 2 ];then
     CONSUL_DOMAIN_SUFFIX=$(echo ${NODE_NAME} | cut -d "." -f2-)
-fi 
+fi
 
 if [ "X${NO_CONSUL}" != "X" ];then
     echo "Do not start any consul server"
@@ -109,15 +112,15 @@ fi
 
 if [ "X${BOOTSTRAP_CONSUL}" == "Xtrue" ];then
     sed -i -e "s#\"bootstrap\":.*#\"bootstrap\": true,#" /etc/consul.d/agent.json
-    RUN_SERVER=true
+    CONSUL_SERVER=true
 elif [ "X${CONSUL_BOOTSTRAP}" == "Xtrue" ];then
     sed -i -e "s#\"bootstrap\":.*#\"bootstrap\": true,#" /etc/consul.d/agent.json
-    RUN_SERVER=true
+    CONSUL_SERVER=true
 elif [ "X${CONSUL_BOOTSTRAP_EXPECT}" != "X" ];then
     sed -i -e "s#\"bootstrap\":.*#\"bootstrap_expect\": ${CONSUL_BOOTSTRAP_EXPECT},#" /etc/consul.d/agent.json
-    RUN_SERVER=true
+    CONSUL_SERVER=true
 fi
-if [ "X${RUN_SERVER}" == "Xtrue" ];then
+if [ "X${CONSUL_SERVER}" == "Xtrue" ];then
     sed -i -e "s#\"server\":.*#\"server\": true,#" /etc/consul.d/agent.json
 fi
 if [ "X${DNS_RECURSOR}" != "X" ];then
