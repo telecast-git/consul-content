@@ -43,10 +43,7 @@ if [ "x${FORWARD_TO_LOGSTASH}" == "xtrue" ];then
 fi
 # if consul in env, join
 for env_line in $(env);do
-    if [ $(echo ${env_line} |grep -c CONSUL_SERVER) -ne 0 ];then
-        CONSUL_CLUSTER_IPS="$(echo ${env_line}|awk -F\= '{print $2}')"
-        break
-    elif [ $(echo ${env_line} |egrep -c "^CONSU.*_ADDR=") -ne 0 ];then
+    if [ $(echo ${env_line} |egrep -c "^CONSU.*_ADDR=") -ne 0 ];then
         CONSUL_CLUSTER_IPS="$(echo ${env_line}|awk -F\= '{print $2}')"
         break
     elif [ $(echo ${env_line} |grep -c PORT_8500_TCP_ADDR) -ne 0 ];then
