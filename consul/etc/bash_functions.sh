@@ -61,7 +61,7 @@ function wait_for_srv_loop {
     fi
     if [ ! -z $2 ];then
         echo " [OK]"
-    elif [ $(curl -s "localhost:8500/v1/health/checks/${1}?near=_agent" |jq ".[].Status" |tr -d '"') != "passing" ];then
+    elif [ $(curl -s "localhost:8500/v1/health/checks/${1}?near=_agent" |jq ".[].Status" |tr -d '"' |grep -c passing) -eq 0 ];then
         echo -n "4"
         sleep 1
         wait_for_srv_loop ${1} ${TIMEOUT}
