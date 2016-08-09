@@ -124,6 +124,8 @@ if [ "X${DNS_RECURSOR}" != "X" ];then
     sed -i -e "s#\"recursor\":.*#\"recursor\": \"${DNS_RECURSOR}\",#" /etc/consul.d/agent.json
 fi
 
+trap 'consul leave' SIGTERM
+
 mkdir -p /etc/consul.d/
 mkdir -p /var/consul/
 ${CONSUL_BIN} agent -pid-file=${PIDFILE} -config-file=/etc/consul.d/agent.json -config-dir=/etc/consul.d ${JOIN_WAN}
