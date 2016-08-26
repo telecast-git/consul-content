@@ -18,7 +18,9 @@ if [ ! -f ${CONSUL_BIN} ];then
    CONSUL_BIN=/usr/bin/consul
 fi
 
-if [ "X${CONSUL_NODE_NAME}" == "X" ];then
+if [ "X${CONSUL_GETHOSTNAME}" == "Xtrue" ];then
+    NODE_NAME=$(go-getmyname)
+elif [ "X${CONSUL_NODE_NAME}" == "X" ];then
     NODE_NAME=$(hostname -f)
 else
     NODE_NAME=${CONSUL_NODE_NAME}
