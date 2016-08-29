@@ -25,6 +25,7 @@ function set_last {
     consul-cli kv write ${SRV_STRING}/last-id $1
 }
 
+
 SESSION_ID=$(consul-cli kv lock ${SRV_STRING}/lock)
 if [ $(consul-cli kv keys ${SRV_STRING}/ |grep -c ${HOSTNAME}) -eq 1 ];then
     MY_ID=$(consul-cli kv read ${SRV_STRING}/${HOSTNAME})
@@ -47,5 +48,8 @@ else
 fi
 consul-cli kv write ${SRV_STRING}/${HOSTNAME} ${MY_ID}
 consul-cli kv write ${SRV_STRING}/$(cat /etc/hostname) ${MY_ID}
+if [ "X${CONSUL_GETHOSTNAME}" == "Xtrue" ];then
+   consul-cli kv write ${SRV_STRING}/$(go-getmyname) ${MY_ID}
+fi
 consul-cli kv unlock ${SRV_STRING}/lock --session ${SESSION_ID}
 echo ${MY_ID}
