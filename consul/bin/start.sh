@@ -11,6 +11,7 @@ LINKED_SERVER=${LINKED_SERVER-0}
 BOOTSTRAP_CONSUL=${BOOTSTRAP_CONSUL-false}
 CONSUL_BOOTSTRAP_SOLO=${CONSUL_BOOTSTRAP_SOLO-$BOOTSTRAP_CONSUL}
 CONSUL_CLUSTER_IPS=${CONSUL_CLUSTER_IPS-$LINKDED_SERVER}
+CONSUL_CLUSTER_PORT=${CONSUL_CLUSTER_PORT:-8500}
 WAN_SERVER=${WAN_SERVER}
 CONSUL_DOMAIN_MATCH=${CONSUL_DOMAIN_MATCH-false}
 
@@ -87,7 +88,7 @@ if [ ! -z "${CONSUL_CLUSTER_IPS}" ];then
               continue
           elif [ "X${CONSUL_SKIP_CURL}" == "Xtrue" ];then
               START_JOIN+=" ${IP}"
-          elif [ $(curl --connect-timeout 2 -sI ${IP}:8500/ui/|grep -c "HTTP/1.1 200 OK") -eq 1 ];then
+          elif [ $(curl --connect-timeout 2 -sI ${IP}:${CONSUL_CLUSTER_PORT}/ui/|grep -c "HTTP/1.1 200 OK") -eq 1 ];then
               START_JOIN+=" ${IP}"
           fi
        fi
