@@ -1,7 +1,7 @@
 #!/usr/local/bin/dumb-init /bin/bash
 
 PIDFILE=/var/run/consul.pid
-CONSUL_BIN=/usr/local/bin/consul
+CONSUL_BIN=${CONSUL_BIN:-/usr/local/bin/consul}
 NET_DEV=${CONSUL_NET_DEV-eth0}
 CONSUL_SERVER=${CONSUL_SERVER}
 if [ "X${CONSUL_SERVER}" == "X" ];then
