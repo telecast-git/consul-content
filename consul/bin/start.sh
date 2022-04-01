@@ -68,13 +68,13 @@ if [ "X${ADDV_ADDR}" != "X" ];then
     if [ "X${ADDV_ADDR}" == "XSERVER" ];then
         ADDV_ADDR=$(cat /host_info/ip_eth0)
     fi
-    sed -i -e "s#\"advertise_addr\":.*#\"advertise_addr\": \"${ADDV_ADDR}\",#" /etc/consul.d/agent.json
+    sed -i -e "s#\"bind_addr\":.*#\"bind_addr\": \"${ADDV_ADDR}\",#" /etc/consul.d/agent.json
 else
-    sed -i -e "s#\"advertise_addr\":.*#\"advertise_addr\": \"${IPv4}\",#" /etc/consul.d/agent.json
+    sed -i -e "s#\"bind_addr\":.*#\"bind_addr\": \"${IPv4}\",#" /etc/consul.d/agent.json
 fi
 ### Addvertise address wan
 if [ "X${CONSUL_ADDV_ADDR_WAN}" != "X" ];then
-    sed -i -e "s#\"advertise_addr_wan\":.*#\"advertise_addr_wan\": \"${CONSUL_ADDV_ADDR_WAN}\",#" /etc/consul.d/agent.json
+    sed -i -e "s#\"bind_addr_wan\":.*#\"bind_addr_wan\": \"${CONSUL_ADDV_ADDR_WAN}\",#" /etc/consul.d/agent.json
 fi
 if [ "X${DC_NAME}" != "X" ];then
     sed -i -e "s#\"datacenter\":.*#\"datacenter\": \"${DC_NAME}\",#" /etc/consul.d/agent.json
